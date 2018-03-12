@@ -39,6 +39,4 @@ server.pid
 .cache
 .settings
 .g8/*
-.project
-.classpath
 
