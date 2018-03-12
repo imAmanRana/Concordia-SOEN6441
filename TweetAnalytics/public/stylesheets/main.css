@@ -1,0 +1,11 @@
+.avatar {
+    vertical-align: middle;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    float:left;
+}
+
+.userProfile{
+	height: 48px;
+}

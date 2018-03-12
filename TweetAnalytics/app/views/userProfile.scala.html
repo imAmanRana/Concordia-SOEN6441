@@ -1,0 +1,63 @@
+@(user:twitter4j.User,recentPost:List[twitter4j.Status])
+@main("User Profile") {
+	
+	<h1>User Profile</h1>
+	<table>
+		<tr>
+			<td>Name</td>
+			<td>
+				@user.getName
+			</td>
+		</tr>
+		<tr>
+			<td>Screen Name</td>
+			<td>
+				@user.getScreenName
+			</td>
+		</tr>
+		<tr>
+			<td>Location</td>
+			<td>
+				@user.getLocation
+			</td>
+		</tr>
+		<tr>
+			<td>Followers Count</td>
+			<td>
+				@user.getFollowersCount
+			</td>
+		</tr>
+		<tr>
+			<td>Following Count</td>
+			<td>
+				@user.getFriendsCount
+			</td>
+		</tr>
+		<tr>
+			<td>Tweets Count</td>
+			<td>
+				@user.getStatusesCount
+			</td>
+		</tr>
+		<tr>
+			<td>is Verified</td>
+			<td>
+				@user.isVerified
+			</td>
+		</tr>
+		<tr>
+			<td>Recent Post</td>
+			<td>
+				@if(!recentPost.isEmpty){
+					<ul>
+						@for(status <- recentPost){
+						<li>
+							@status.getText
+						</li>
+						}
+					</ul>
+				}
+			</td>
+		</tr>
+	</table>
+}
