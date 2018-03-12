@@ -1,73 +1,92 @@
 package controllers;
 
-import play.data.Form;
-import play.data.FormFactory;
-import play.mvc.*;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import models.Tweet;
-
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import static play.libs.Scala.asScala;
+import javax.inject.Inject;
 
+import models.Tweet;
+import models.User;
+import play.data.Form;
+import play.data.FormFactory;
+import play.mvc.Controller;
+import play.mvc.Result;
 import twitter4j.Query;
 import twitter4j.QueryResult;
+import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-@SuppressWarnings("deprecation")
 public class TweetController extends Controller {
 
 	private final Form<TweetData> form;
-	String keyword;
-	List<Tweet> final_result = new ArrayList<>();
+	private final List<Tweet> tweets;
+	private final Twitter twitter;
 
 	@Inject
 	public TweetController(FormFactory formFactory) {
 		this.form = formFactory.form(TweetData.class);
+		this.tweets = new ArrayList<>();
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true)
+			.setOAuthConsumerKey("zHuFIr0kfEwLJJcGHpKv41ohq")
+			.setOAuthConsumerSecret("dacuhmxqdJU4v77a10cb74IYs9N75Jl77S0te5ykAd1HsAib2X")
+			.setOAuthAccessToken("228998825-IjjOx9ZAndDo9dEs3EpY5fSJr6s3h6wqp7UiOIU4")
+			.setOAuthAccessTokenSecret("MAaHLWxzfrxir6rALkSEewFWwdMhl65xbAvGQaq6uZ5fd");
+		TwitterFactory tf = new TwitterFactory(cb.build());
+		twitter = tf.getInstance();
 	}
 
 	public Result listTweets() {
-		return ok(views.html.listTweets.render(keyword, final_result, form));
+		return ok(views.html.listTweets.render(tweets, form));
 	}
 
-	public Result createTweets() {
-
+	public Result fetchTweets() {
+		/*try {
+		Files.write(Paths.get("a:/output.txt"), "".getBytes());
+		}catch(Exception e) {}
+		*/
 		final Form<TweetData> boundForm = form.bindFromRequest();
 
 		if (boundForm.hasErrors()) {
 			play.Logger.ALogger logger = play.Logger.of(getClass());
 			logger.error("errors = {}", boundForm.errors());
-			return badRequest(views.html.listTweets.render(keyword, final_result, boundForm));
+			return badRequest(views.html.listTweets.render(tweets, boundForm));
 		} else {
 			TweetData data = boundForm.get();
-			keyword = data.getKeyword();
-			ConfigurationBuilder cb = new ConfigurationBuilder();
-			cb.setDebugEnabled(true).setOAuthConsumerKey("dmu5QlY7m7ii57UHK7nC8PhEH")
-					.setOAuthConsumerSecret("aGbYMWcYino9yCqhq8ZfmdmNHCLqZ6Z6EgHPHRwW0uk31SQrhu")
-					.setOAuthAccessToken("972207166961659904-765KE2Wy7Z3BYuRw9VbrffJjJ9po1rV")
-					.setOAuthAccessTokenSecret("Utnfkw20VWoSbPs3dxbQXuH7gP3pDkuLzhmXj5UCelIzb");
-			TwitterFactory tf = new TwitterFactory(cb.build());
-			Twitter twitter = tf.getInstance();
+			String keyword = data.getKeyword();
 
 			try {
-				Query query = new Query(keyword).count(10);
+				Query query = new Query(keyword);
+				query.setCount(10);
 				QueryResult result;
-
 				result = twitter.search(query);
 				List<Status> tweets = result.getTweets();
-				for (Status tweet : tweets) {
-					final_result.add(new Tweet(tweet.getUser().getScreenName(), tweet.getText()));
-					System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
-					System.out.println(final_result);
+				User user;
+				Tweet tweet;
+				for (Status t : tweets) {
+					user = new User();
+					user.setName(t.getUser().getName());
+					user.setScreenName(t.getUser().getScreenName());
+					user.setProfileImageUrl(user.getScreenName());
+					tweet = new Tweet();
+					tweet.setUser(user);
+					tweet.setCreatedAt(t.getCreatedAt());
+					tweet.setTweet(t.getText());
+					tweet.setRetweetCount(t.getRetweetCount());
+					tweet.setFavoriteCount(t.getFavoriteCount());
+					/*try {
+						Files.write(Paths.get("a:/output.txt"), t.toString().getBytes(),StandardOpenOption.APPEND);
+					} catch (Exception e) {
+
+					}*/
+					this.tweets.add(tweet);
 				}
 			} catch (TwitterException te) {
 				te.printStackTrace();
@@ -76,5 +95,19 @@ public class TweetController extends Controller {
 			}
 		}
 		return redirect(routes.TweetController.listTweets());
+	}
+	
+	public Result getUser(final String screenName) {
+		twitter4j.User user=null;
+		ResponseList<Status> recentPost=null;
+		try {
+			user = twitter.showUser(screenName);
+			recentPost =  twitter.getUserTimeline(screenName);
+		}catch (TwitterException te) {
+			te.printStackTrace();
+			System.out.println("Failed to fetch user profile: " + te.getMessage());
+			System.exit(-1);
+		}
+		return ok(views.html.userProfile.render(user,recentPost));
 	}
 }

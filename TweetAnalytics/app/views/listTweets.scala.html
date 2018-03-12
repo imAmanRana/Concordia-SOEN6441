@@ -1,45 +1,42 @@
-@(keyword:String,final_result:List[Tweet], form1: Form[TweetData])
-
+@(tweets:List[Tweet], searchForm: Form[TweetData])
 @main("Tweets") {
 
-      <h1>Tweet Application</h1>
-
     @* Global errors are not tied to any particular form field *@
-    @if(form1.hasGlobalErrors) {
-        @form1.globalErrors.asScala.map { error: play.data.validation.ValidationError =>
-            <div>
+    @if(searchForm.hasGlobalErrors) {
+        @searchForm.globalErrors.asScala.map { error: play.data.validation.ValidationError =>
+            <div class="clearfix error">
                 @error.key: @error.message
             </div>
         }
     }
-
-    @helper.form(action =routes.TweetController.createTweets()) {
+		<h2>Tweet Analytics</h2>
+		@helper.form(action =routes.TweetController.fetchTweets) {
         @helper.CSRF.formField
-
-        @helper.inputText(form1("keyword"))
-
-        <button type="submit">Search</button>
+		<div class="input-group mb-1">
+       	 	@helper.inputText(searchForm("keyword"),'placeholder->"Search Keyword", 'class->"form-control")
+	  	</div>
+		<button type="submit" class="btn btn-secondary">Search</button>
     }
     <hr/>
-
-
-    <table>
+    @if(!tweets.isEmpty){
+		<table>
         <thead>
-        
-            <tr><td>User</td>
-            
-            <td>Text</td></tr>
-           
+            <tr>
+            	<td>User</td>
+            	<td>Text</td>
+            </tr>
         </thead>
         <tbody>
-        	@for(w<- final_result){
-        		<tr>
-        			<td>@w.user</td>
-        			<td>@w.text</td>
-        		</tr>
-        		}
+        	@for(w<- tweets){
+        	<tr>
+        		<td>
+        			<a href=@routes.TweetController.getUser(w.getUser.getScreenName)>@w.getUser.getScreenName</a>
+        		</td>
+        		<td>@w.getTweet</td>
+        	</tr>
+        	}
         </tbody>
-    </table>
-    
+		</table>
+	}
 
 }

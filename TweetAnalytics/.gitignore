@@ -1,5 +1,7 @@
 # Compiled class file
 *.class
+.classpath
+.project
 
 # Log file
 *.log
@@ -36,7 +38,7 @@ test-result
 server.pid
 *.eml
 /dist/
-.cache
+.cache*
 .settings
 .g8/*
 
