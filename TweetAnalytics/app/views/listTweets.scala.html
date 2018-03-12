@@ -1,0 +1,45 @@
+@(keyword:String,final_result:List[Tweet], form1: Form[TweetData])
+
+@main("Tweets") {
+
+      <h1>Tweet Application</h1>
+
+    @* Global errors are not tied to any particular form field *@
+    @if(form1.hasGlobalErrors) {
+        @form1.globalErrors.asScala.map { error: play.data.validation.ValidationError =>
+            <div>
+                @error.key: @error.message
+            </div>
+        }
+    }
+
+    @helper.form(action =routes.TweetController.createTweets()) {
+        @helper.CSRF.formField
+
+        @helper.inputText(form1("keyword"))
+
+        <button type="submit">Search</button>
+    }
+    <hr/>
+
+
+    <table>
+        <thead>
+        
+            <tr><td>User</td>
+            
+            <td>Text</td></tr>
+           
+        </thead>
+        <tbody>
+        	@for(w<- final_result){
+        		<tr>
+        			<td>@w.user</td>
+        			<td>@w.text</td>
+        		</tr>
+        		}
+        </tbody>
+    </table>
+    
+
+}
