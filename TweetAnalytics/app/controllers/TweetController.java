@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+
 import models.Tweet;
 import models.User;
 import play.data.Form;
@@ -28,17 +31,20 @@ public class TweetController extends Controller {
 	private final Form<TweetData> form;
 	private final List<Tweet> tweets;
 	private final Twitter twitter;
+	private final Config config;
 
 	@Inject
 	public TweetController(FormFactory formFactory) {
 		this.form = formFactory.form(TweetData.class);
 		this.tweets = new ArrayList<>();
+		config = ConfigFactory.load();
+		
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
-			.setOAuthConsumerKey("zHuFIr0kfEwLJJcGHpKv41ohq")
-			.setOAuthConsumerSecret("dacuhmxqdJU4v77a10cb74IYs9N75Jl77S0te5ykAd1HsAib2X")
-			.setOAuthAccessToken("228998825-IjjOx9ZAndDo9dEs3EpY5fSJr6s3h6wqp7UiOIU4")
-			.setOAuthAccessTokenSecret("MAaHLWxzfrxir6rALkSEewFWwdMhl65xbAvGQaq6uZ5fd");
+			.setOAuthConsumerKey(config.getString("CONSUMER_KEY"))
+			.setOAuthConsumerSecret(config.getString("CONSUMER_SECRET"))
+			.setOAuthAccessToken(config.getString("ACCESS_TOKEN"))
+			.setOAuthAccessTokenSecret(config.getString("ACCESS_TOKEN_SECRET"));
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
 	}
@@ -48,10 +54,13 @@ public class TweetController extends Controller {
 	}
 
 	public Result fetchTweets() {
+		
 		/*try {
-		Files.write(Paths.get("a:/output.txt"), "".getBytes());
-		}catch(Exception e) {}
-		*/
+			Files.write(Paths.get("a:/output.txt"), "".getBytes());
+		} catch (Exception e) {
+
+		}*/
+		
 		final Form<TweetData> boundForm = form.bindFromRequest();
 
 		if (boundForm.hasErrors()) {
@@ -74,13 +83,13 @@ public class TweetController extends Controller {
 					user = new User();
 					user.setName(t.getUser().getName());
 					user.setScreenName(t.getUser().getScreenName());
-					user.setProfileImageUrl(user.getScreenName());
+					user.setProfileImageUrl(t.getUser().getProfileImageURLHttps());
 					tweet = new Tweet();
 					tweet.setUser(user);
 					tweet.setCreatedAt(t.getCreatedAt());
 					tweet.setTweet(t.getText());
-					tweet.setRetweetCount(t.getRetweetCount());
-					tweet.setFavoriteCount(t.getFavoriteCount());
+					tweet.setRetweetCount(t.getRetweetedStatus()!=null?t.getRetweetedStatus().getRetweetCount():0);
+					tweet.setFavoriteCount(t.getRetweetedStatus()!=null?t.getRetweetedStatus().getFavoriteCount():0);
 					/*try {
 						Files.write(Paths.get("a:/output.txt"), t.toString().getBytes(),StandardOpenOption.APPEND);
 					} catch (Exception e) {
@@ -109,5 +118,10 @@ public class TweetController extends Controller {
 			System.exit(-1);
 		}
 		return ok(views.html.userProfile.render(user,recentPost));
+	}
+	
+	public Result clearAll() {
+		this.tweets.clear();
+		return redirect(routes.TweetController.listTweets());
 	}
 }

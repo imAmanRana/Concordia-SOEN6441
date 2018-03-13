@@ -46,8 +46,8 @@ public class User {
 	/**
 	 * @param profileImageUrl the profileImageUrl to set
 	 */
-	public void setProfileImageUrl(String screenName) {
-		this.profileImageUrl = String.format("https://twitter.com/%s/profile_image?size=normal", screenName);
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
 	}
 	
 	

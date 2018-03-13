@@ -70,6 +70,5 @@ public class Tweet {
 	public void setFavoriteCount(long favoriteCount) {
 		this.favoriteCount = favoriteCount;
 	}
-	
 
 }
