@@ -10,3 +10,5 @@ scalaVersion := "2.12.4"
 libraryDependencies += guice
 
 libraryDependencies += "org.twitter4j" % "twitter4j-core" % "4.0.6"
+
+libraryDependencies += "org.mockito" % "mockito-core" % "2.10.0" % "test"
