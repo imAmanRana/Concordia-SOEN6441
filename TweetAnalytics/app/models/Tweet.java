@@ -3,7 +3,7 @@ package models;
 
 import java.util.Date;
 /**
- * model class for storing tweets
+ * model class used to store tweets
  * @author Amandeep Singh
  * @author raghav
  * @version 2.0
