@@ -24,14 +24,21 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
-
+/**
+ * class for fetching tweets
+ * @author raghav
+ *
+ */
 public class TweetController extends Controller {
 
 	private final Form<TweetData> form;
 	private final List<Tweet> tweets;
 	private final Twitter twitter;
 	private final Config config;
-
+	/**
+	 * 
+	 * @param formFactory sets the formFactory
+	 */
 	@Inject
 	public TweetController(FormFactory formFactory) {
 		this.form = formFactory.form(TweetData.class);
@@ -47,10 +54,17 @@ public class TweetController extends Controller {
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
 	}
-
+	/**
+	 * 
+	 * @return list of tweets
+	 */
 	public Result listTweets() {
 		return ok(views.html.listTweets.render(tweets, form));
 	}
+	/**
+	 * 
+	 * @return tweets
+	 */
 
 	public CompletionStage<Result> fetchTweets() {
 		
@@ -79,7 +93,11 @@ public class TweetController extends Controller {
 					return redirect(routes.TweetController.listTweets());
 					});
 	}
-	
+	/**
+	 * 
+	 * @param query sets the query
+	 * @return resultTweets 
+	 */
 	private List<Tweet> queryApi(Query query){
 		
 		List<Tweet> resultTweets=null;
@@ -110,7 +128,11 @@ public class TweetController extends Controller {
 		}
 		return resultTweets;
 	}
-	
+	/**
+	 * 
+	 * @param screenName sets the screenName
+	 * @return user's profile and recent posts
+	 */
 	public CompletionStage<Result> getUser(final String screenName) {
 		CompletableFuture<twitter4j.User> promiseUser;
 		CompletableFuture<ResponseList<Status>> promiseRecentPost;
@@ -144,7 +166,10 @@ public class TweetController extends Controller {
 			
 		
 	}
-	
+	/**
+	 * 
+	 * @return asynchronously list of tweets
+	 */
 	public CompletionStage<Result> clearAll() {
 		return CompletableFuture.supplyAsync(()->{
 			this.tweets.clear();
