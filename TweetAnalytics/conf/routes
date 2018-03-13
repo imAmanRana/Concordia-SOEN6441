@@ -9,6 +9,7 @@ GET     /                           controllers.HomeController.index
 GET     /tweet                    	controllers.TweetController.listTweets
 POST    /tweet                    	controllers.TweetController.fetchTweets
 GET		/user						controllers.TweetController.getUser(screenName:String)
+GET		/clearAll					controllers.TweetController.clearAll
                            
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
