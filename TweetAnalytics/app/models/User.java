@@ -4,8 +4,10 @@
 package models;
 
 /**
+ * model class used for storing user's info
  * @author Amandeep Singh
- *
+ * @author raghav
+ * @version 2.0
  */
 public class User {
 

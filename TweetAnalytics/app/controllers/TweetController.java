@@ -24,14 +24,33 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
-
+/**
+ *This controller contains an action to handle HTTP requests
+ * to the application's Tweet's page.
+ * @author raghav
+ *
+ */
 public class TweetController extends Controller {
-
+	/**
+	 * stores the form data
+	 */
 	private final Form<TweetData> form;
+	/**
+	 * stores the list of tweets
+	 */
 	private final List<Tweet> tweets;
+	/**
+	 * stores the twitter information
+	 */
 	private final Twitter twitter;
+	/**
+	 * stores the configuration
+	 */
 	private final Config config;
-
+	/**
+	 * This action makes the requests to twitter
+	 * @param formFactory sets the formFactory
+	 */
 	@Inject
 	public TweetController(FormFactory formFactory) {
 		this.form = formFactory.form(TweetData.class);
@@ -47,10 +66,17 @@ public class TweetController extends Controller {
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
 	}
-
+	/**
+	 * 
+	 * @return list of tweets
+	 */
 	public Result listTweets() {
 		return ok(views.html.listTweets.render(tweets, form));
 	}
+	/**
+	 * 
+	 * @return tweets
+	 */
 
 	public CompletionStage<Result> fetchTweets() {
 		
@@ -79,7 +105,11 @@ public class TweetController extends Controller {
 					return redirect(routes.TweetController.listTweets());
 					});
 	}
-	
+	/**
+	 * 
+	 * @param query sets the query
+	 * @return resultTweets 
+	 */
 	private List<Tweet> queryApi(Query query){
 		
 		List<Tweet> resultTweets=null;
@@ -110,7 +140,11 @@ public class TweetController extends Controller {
 		}
 		return resultTweets;
 	}
-	
+	/**
+	 * 
+	 * @param screenName sets the screenName
+	 * @return user's profile and recent posts
+	 */
 	public CompletionStage<Result> getUser(final String screenName) {
 		CompletableFuture<twitter4j.User> promiseUser;
 		CompletableFuture<ResponseList<Status>> promiseRecentPost;
@@ -144,7 +178,10 @@ public class TweetController extends Controller {
 			
 		
 	}
-	
+	/**
+	 * 
+	 * @return asynchronously list of tweets
+	 */
 	public CompletionStage<Result> clearAll() {
 		return CompletableFuture.supplyAsync(()->{
 			this.tweets.clear();
