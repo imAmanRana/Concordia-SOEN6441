@@ -1,10 +1,9 @@
 package controllers;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 import javax.inject.Inject;
 
@@ -53,75 +52,103 @@ public class TweetController extends Controller {
 		return ok(views.html.listTweets.render(tweets, form));
 	}
 
-	public Result fetchTweets() {
+	public CompletionStage<Result> fetchTweets() {
 		
 		/*try {
 			Files.write(Paths.get("a:/output.txt"), "".getBytes());
 		} catch (Exception e) {
 
 		}*/
-		
+		CompletableFuture<List<Tweet>> promiseTweet=null;
 		final Form<TweetData> boundForm = form.bindFromRequest();
 
 		if (boundForm.hasErrors()) {
 			play.Logger.ALogger logger = play.Logger.of(getClass());
 			logger.error("errors = {}", boundForm.errors());
-			return badRequest(views.html.listTweets.render(tweets, boundForm));
+			return null;//badRequest(views.html.listTweets.render(tweets, boundForm));
 		} else {
 			TweetData data = boundForm.get();
 			String keyword = data.getKeyword();
-
-			try {
-				Query query = new Query(keyword);
-				query.setCount(10);
-				QueryResult result;
-				result = twitter.search(query);
-				List<Status> tweets = result.getTweets();
-				User user;
-				Tweet tweet;
-				for (Status t : tweets) {
-					user = new User();
-					user.setName(t.getUser().getName());
-					user.setScreenName(t.getUser().getScreenName());
-					user.setProfileImageUrl(t.getUser().getProfileImageURLHttps());
-					tweet = new Tweet();
-					tweet.setUser(user);
-					tweet.setCreatedAt(t.getCreatedAt());
-					tweet.setTweet(t.getText());
-					tweet.setRetweetCount(t.getRetweetedStatus()!=null?t.getRetweetedStatus().getRetweetCount():0);
-					tweet.setFavoriteCount(t.getRetweetedStatus()!=null?t.getRetweetedStatus().getFavoriteCount():0);
-					/*try {
-						Files.write(Paths.get("a:/output.txt"), t.toString().getBytes(),StandardOpenOption.APPEND);
-					} catch (Exception e) {
-
-					}*/
-					this.tweets.add(tweet);
-				}
-			} catch (TwitterException te) {
-				te.printStackTrace();
-				System.out.println("Failed to search tweets: " + te.getMessage());
-				System.exit(-1);
-			}
+			Query query = new Query(keyword);
+			query.setCount(10);
+			promiseTweet = CompletableFuture.supplyAsync(()->queryApi(query));
+				
 		}
-		return redirect(routes.TweetController.listTweets());
+		return promiseTweet.thenApply(tweets -> {
+					this.tweets.addAll(tweets);
+					return redirect(routes.TweetController.listTweets());
+					});
 	}
 	
-	public Result getUser(final String screenName) {
-		twitter4j.User user=null;
-		ResponseList<Status> recentPost=null;
+	private List<Tweet> queryApi(Query query){
+		
+		List<Tweet> resultTweets=null;
 		try {
-			user = twitter.showUser(screenName);
-			recentPost =  twitter.getUserTimeline(screenName);
-		}catch (TwitterException te) {
-			te.printStackTrace();
-			System.out.println("Failed to fetch user profile: " + te.getMessage());
-			System.exit(-1);
+		
+			QueryResult result = twitter.search(query);
+			
+			List<Status> tweets = result.getTweets();
+			User user;
+			Tweet tweet;
+			resultTweets = new ArrayList<>();
+			for (Status t : tweets) {
+				user = new User();
+				user.setName(t.getUser().getName());
+				user.setScreenName(t.getUser().getScreenName());
+				user.setProfileImageUrl(t.getUser().getProfileImageURLHttps());
+				tweet = new Tweet();
+				tweet.setUser(user);
+				tweet.setCreatedAt(t.getCreatedAt());
+				tweet.setTweet(t.getText());
+				tweet.setRetweetCount(t.getRetweetedStatus()!=null?t.getRetweetedStatus().getRetweetCount():0);
+				tweet.setFavoriteCount(t.getRetweetedStatus()!=null?t.getRetweetedStatus().getFavoriteCount():0);
+				resultTweets.add(tweet);
+			}
+			
+		}catch(Exception exp) {
+			System.out.println("exception");
 		}
-		return ok(views.html.userProfile.render(user,recentPost));
+		return resultTweets;
 	}
 	
-	public Result clearAll() {
-		this.tweets.clear();
-		return redirect(routes.TweetController.listTweets());
+	public CompletionStage<Result> getUser(final String screenName) {
+		CompletableFuture<twitter4j.User> promiseUser;
+		CompletableFuture<ResponseList<Status>> promiseRecentPost;
+			
+		promiseUser = CompletableFuture.supplyAsync(()->{
+									twitter4j.User user = null;
+									try {
+										user =  twitter.showUser(screenName);
+									} catch (TwitterException exp){
+										System.out.println("Exceptin while fetching user");
+									}
+									return user;
+								});
+		promiseRecentPost =  CompletableFuture.supplyAsync(()->{
+									ResponseList<Status> recentPost = null;
+									try {
+										recentPost =  twitter.getUserTimeline(screenName);
+									}  catch (TwitterException exp){
+										System.out.println("Exceptin while fetching user");
+									}
+									return recentPost;
+								});
+		
+		return CompletableFuture.allOf(promiseUser,promiseRecentPost)
+							.thenApplyAsync(dummy -> {
+								twitter4j.User user = promiseUser.join();
+								ResponseList<Status> recentPost = promiseRecentPost.join();
+								return ok(views.html.userProfile.render(user,recentPost));
+							});
+			
+			
+		
+	}
+	
+	public CompletionStage<Result> clearAll() {
+		return CompletableFuture.supplyAsync(()->{
+			this.tweets.clear();
+			return redirect(routes.TweetController.listTweets());
+		});
 	}
 }
