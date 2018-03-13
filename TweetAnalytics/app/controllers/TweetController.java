@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+
 
 import models.Tweet;
 import models.User;
@@ -25,31 +27,27 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 /**
- *This controller contains an action to handle HTTP requests
+ *This controller contains multiple  action methods to handle HTTP requests
  * to the application's Tweet's page.
- * @author raghav
+ * @author Raghav
  *
  */
 public class TweetController extends Controller {
-	/**
-	 * stores the form data
-	 */
+	//log4j.rootLogger=DEBUG, console, file;
 	private final Form<TweetData> form;
-	/**
-	 * stores the list of tweets
-	 */
+	
 	private final List<Tweet> tweets;
-	/**
-	 * stores the twitter information
-	 */
+	
 	private final Twitter twitter;
-	/**
-	 * stores the configuration
-	 */
+	
 	private final Config config;
+	
+	
 	/**
-	 * This action makes the requests to twitter
-	 * @param formFactory sets the formFactory
+	 * Constructor intializes the form ,list of tweets , Twitter instance by setting the 
+	 * configuration for authorization for twitter api.
+	 * @param formFactory   creates the form
+	 * @author Amandeep Singh
 	 */
 	@Inject
 	public TweetController(FormFactory formFactory) {
@@ -65,17 +63,23 @@ public class TweetController extends Controller {
 			.setOAuthAccessTokenSecret(config.getString("ACCESS_TOKEN_SECRET"));
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
+		
+		
 	}
 	/**
-	 * 
-	 * @return list of tweets
+	 * Action method calls the view template listtweets and render the list of tweets and form to listtweets.
+	 * @return returns a play.mvc.Result value, representing the HTTP response to send to the client
 	 */
 	public Result listTweets() {
 		return ok(views.html.listTweets.render(tweets, form));
 	}
+	
 	/**
-	 * 
-	 * @return tweets
+	 * Fetch the tweets from twitter api asynchronously by calling {@link #queryApi(Query query) querApi} on a different thread using
+	 * <code>CompletableFuture.supplyAsync</code> method
+	 * and then redirects the fetched results to template listtweets using <code>CompletableFuture.thenApply </code> 
+	 * @return CompletableFuture of type Result
+	 * @author Kamalpreet Kaur
 	 */
 
 	public CompletionStage<Result> fetchTweets() {
@@ -106,9 +110,11 @@ public class TweetController extends Controller {
 					});
 	}
 	/**
-	 * 
-	 * @param query sets the query
-	 * @return resultTweets 
+	 * Takes a query object and search it on twitter and returns the list 
+	 * of type Tweet by converting it from the list of type Status 
+	 * @param query  query to be searched 
+	 * @return list of type Tweet 
+	 * @author manpreet
 	 */
 	private List<Tweet> queryApi(Query query){
 		
@@ -136,14 +142,16 @@ public class TweetController extends Controller {
 			}
 			
 		}catch(Exception exp) {
-			System.out.println("exception");
+		System.out.println(exp.getMessage());
 		}
 		return resultTweets;
 	}
 	/**
+	 * Takes the user screenname and fetch the user object and list of tweets for that user asynchronously 
 	 * 
-	 * @param screenName sets the screenName
-	 * @return user's profile and recent posts
+	 * @param screenName  the users screenname
+	 * @return user's profile and its recent posts as a completable future of type <code>Result</code>
+	 * @author Amandeep Singh
 	 */
 	public CompletionStage<Result> getUser(final String screenName) {
 		CompletableFuture<twitter4j.User> promiseUser;
@@ -173,14 +181,16 @@ public class TweetController extends Controller {
 								twitter4j.User user = promiseUser.join();
 								ResponseList<Status> recentPost = promiseRecentPost.join();
 								return ok(views.html.userProfile.render(user,recentPost));
-							});
-			
+							});		
 			
 		
 	}
+	
+	
 	/**
-	 * 
-	 * @return asynchronously list of tweets
+	 * Clears all the tweets from the list asynchronously using <code>CompletableFuture.supplyAsync</code> method
+	 * @return returns a <code>CompletionStage Result</code> value, representing the HTTP response to send to the client
+	 * @author Raghav
 	 */
 	public CompletionStage<Result> clearAll() {
 		return CompletableFuture.supplyAsync(()->{

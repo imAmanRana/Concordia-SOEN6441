@@ -1,4 +1,9 @@
-package controllers;
+package controllersTest;
+
+import static org.junit.Assert.assertEquals;
+import static play.mvc.Http.Status.OK;
+import static play.test.Helpers.GET;
+import static play.test.Helpers.route;
 
 import org.junit.Test;
 
@@ -7,12 +12,16 @@ import play.mvc.Result;
 import play.test.Helpers;
 import play.test.WithApplication;
 
-import static org.junit.Assert.assertEquals;
-import static play.test.Helpers.*;
-import static play.mvc.Result.*;
-
+/**
+ *Tests the methods of controller TweetController {@link controllers.TweetController  TweetController} 
+ * @author Kamalpreet Kaur
+ *
+ */
 public class TweetControllerTest extends WithApplication{
 
+	/**Tests the 
+	 *{@link controllers.TweetController#fetchTweets()  testFetchTweets}  method of TweetController
+	 */
 	@Test
 	public void testFetchTweets() {
 	   
