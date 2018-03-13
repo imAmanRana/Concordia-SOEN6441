@@ -1,6 +1,13 @@
+
 package models;
 
 import java.util.Date;
+/**
+ * model class for storing tweets
+ * @author Amandeep Singh
+ * @author raghav
+ * @version 2.0
+ */
 
 public class Tweet {
 	
@@ -72,3 +79,4 @@ public class Tweet {
 	}
 
 }
+
