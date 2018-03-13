@@ -25,18 +25,30 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 /**
- * class for fetching tweets
+ *This controller contains an action to handle HTTP requests
+ * to the application's Tweet's page.
  * @author raghav
  *
  */
 public class TweetController extends Controller {
-
+	/**
+	 * stores the form data
+	 */
 	private final Form<TweetData> form;
+	/**
+	 * stores the list of tweets
+	 */
 	private final List<Tweet> tweets;
+	/**
+	 * stores the twitter information
+	 */
 	private final Twitter twitter;
+	/**
+	 * stores the configuration
+	 */
 	private final Config config;
 	/**
-	 * 
+	 * This action makes the requests to twitter
 	 * @param formFactory sets the formFactory
 	 */
 	@Inject
