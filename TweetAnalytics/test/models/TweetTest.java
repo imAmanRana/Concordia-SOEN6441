@@ -17,7 +17,7 @@ import org.junit.Test;
 /**
  * Tests the methods of model class Tweet
  * 
- * @author Kamalpreet Kaur
+ * @author manpreet
  *
  */
 public class TweetTest {

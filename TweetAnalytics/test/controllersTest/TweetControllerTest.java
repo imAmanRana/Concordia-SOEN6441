@@ -30,7 +30,7 @@ import twitter4j.Query;
  * Tests the methods of controller TweetController
  * {@link controllers.TweetController TweetController}
  * 
- * @author Kamalpreet Kaur
+ * @author Amandeep Singh
  *
  */
 public class TweetControllerTest extends WithApplication {
