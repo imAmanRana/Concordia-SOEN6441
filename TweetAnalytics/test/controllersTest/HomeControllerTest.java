@@ -1,16 +1,17 @@
 package controllersTest;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static play.mvc.Http.Status.SEE_OTHER;
+import static play.test.Helpers.GET;
+import static play.test.Helpers.route;
 
+import org.junit.Test;
 
 import play.mvc.Http.RequestBuilder;
 import play.mvc.Result;
 import play.test.Helpers;
 import play.test.WithApplication;
 
-import static org.junit.Assert.assertEquals;
-import static play.test.Helpers.*;
-import static play.mvc.Result.*;
 
 /**
  *Tests the controller HomeController 
@@ -21,7 +22,7 @@ public class HomeControllerTest extends WithApplication {
 	/**
 	 * Tests whether index action method redirects correctly.
 	 */
-@Test
+	@Test
     public void testIndex() {
         RequestBuilder request = Helpers.fakeRequest()
                 .method(GET)
