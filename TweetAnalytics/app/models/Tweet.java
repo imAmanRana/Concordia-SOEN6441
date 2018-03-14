@@ -1,14 +1,11 @@
-
 package models;
 
 import java.util.Date;
-/**
- * model class used to store tweets
- * @author Amandeep Singh
- * @author raghav
- * @version 2.0
- */
 
+/**
+ * Model class for holding twitter data
+ * @author Satnam Singh
+ */
 public class Tweet {
 	
 	private User user;
@@ -24,7 +21,7 @@ public class Tweet {
 		return user;
 	}
 	/**
-	 * @param user the user to set
+	 * @param user  the user (of type class User)
 	 */
 	public void setUser(User user) {
 		this.user = user;
@@ -36,19 +33,19 @@ public class Tweet {
 		return tweet;
 	}
 	/**
-	 * @param tweet the tweet to set
+	 * @param tweet   tweet to be set(of type class Tweet)
 	 */
 	public void setTweet(String tweet) {
 		this.tweet = tweet;
 	}
 	/**
-	 * @return the createdAt
+	 * @return date at which tweet was created
 	 */
 	public Date getCreatedAt() {
 		return createdAt;
 	}
 	/**
-	 * @param createdAt the createdAt to set
+	 * @param createdAt  date at which tweet was created
 	 */
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
@@ -60,23 +57,21 @@ public class Tweet {
 		return retweetCount;
 	}
 	/**
-	 * @param retweetCount the retweetCount to set
+	 * @param retweetCount the count of retweets
 	 */
 	public void setRetweetCount(long retweetCount) {
 		this.retweetCount = retweetCount;
 	}
 	/**
-	 * @return the favoriteCount
+	 * @return the count favorite tweets
 	 */
 	public long getFavoriteCount() {
 		return favoriteCount;
 	}
 	/**
-	 * @param favoriteCount the favoriteCount to set
+	 * @param favoriteCount   the favoriteCount
 	 */
 	public void setFavoriteCount(long favoriteCount) {
 		this.favoriteCount = favoriteCount;
 	}
-
 }
-

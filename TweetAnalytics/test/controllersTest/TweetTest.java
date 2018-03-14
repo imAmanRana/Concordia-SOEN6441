@@ -1,4 +1,4 @@
-package controllers;
+package controllersTest;
 
 import static org.junit.Assert.*;
 
@@ -6,9 +6,16 @@ import org.junit.Test;
 
 import models.Tweet;
 import models.User;
-
+/**
+ *Tests the  methods of model class Tweet
+ * @author Kamalpreet Kaur
+ *
+ */
 public class TweetTest {
-
+	
+	/**
+	 * Test  
+	 */
 	@Test
 	public void test() {
 		Tweet t=new Tweet();

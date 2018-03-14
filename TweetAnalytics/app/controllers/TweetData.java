@@ -2,28 +2,32 @@ package controllers;
 
 import play.data.validation.Constraints;
 /**
- * class used for storing tweeter form data
- * @author raghav
+ * Represents the structure of keyword for which tweets are to be searched 
+ * @author Raghav
  *
  */
 public class TweetData {
+	
 	@Constraints.Required
 	private String keyword;
+	
 	/**
-	 * constructor for tweet data
+	 * 
+	 * Default Constructor
 	 */
+	
 	public TweetData() {
 	}
 	/**
 	 * 
-	 * @return keyword
+	 * @return keyword the word of type String to be searched
 	 */
 	public String getKeyword() {
 		return keyword;
 	}
 	/**
 	 * 
-	 * @param keyword sets the keyword
+	 * @param keyword   keyword to be set
 	 */
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;

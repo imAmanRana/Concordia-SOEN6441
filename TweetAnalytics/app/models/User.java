@@ -4,10 +4,8 @@
 package models;
 
 /**
- * model class used for storing user's info
+ * Model class defines the structure of a User
  * @author Amandeep Singh
- * @author raghav
- * @version 2.0
  */
 public class User {
 
@@ -16,31 +14,31 @@ public class User {
 	private String profileImageUrl;
 	
 	/**
-	 * @return the name
+	 * @return the name of the user
 	 */
 	public String getName() {
 		return name;
 	}
 	/**
-	 * @param name the name to set
+	 * @param name  the name of user
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	/**
-	 * @return the screenName
+	 * @return the screenName of the user
 	 */
 	public String getScreenName() {
 		return screenName;
 	}
 	/**
-	 * @param screenName the screenName to set
+	 * @param screenName  screenname of the user
 	 */
 	public void setScreenName(String screenName) {
 		this.screenName = screenName;
 	}
 	/**
-	 * @return the profileImageUrl
+	 * @return the profileImageUrl of the user
 	 */
 	public String getProfileImageUrl() {
 		return profileImageUrl;
