@@ -1,0 +1,70 @@
+.avatar {
+    vertical-align: middle;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    float:left;
+}
+
+.userProfileImage{
+	position:absolute;
+	z-index: 1;
+	margin: -40px 0px 0px 6px;
+	vertical-align: middle;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    float:left;
+	
+}
+
+.panel-heading a {
+	font-size: 18px;
+}
+.tweet{
+	font-family: "Segoe UI",Arial,sans-serif";
+}
+
+.icons{
+	padding-right:5px;
+}
+
+.retweets:hover{
+	color:green;
+}
+
+.favourites:hover{
+	color:red;
+}
+
+.panel-front { /* Only for this preview */
+    margin-bottom:20px;
+    margin-top:20px;
+}
+
+.panel-front .panel-heading .panel-title img {
+	border-radius:3px 3px 0px 0px;
+	width:100%;
+}
+
+.panel-front .panel-heading {
+	padding: 0px;	
+}
+
+.panel-front .panel-heading h4 {
+	line-height: 0;
+}
+
+.panel-front .panel-body h4 {
+	font-weight: bold;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+
+.text-right {
+    margin-top: 10px;
+}
+
+.mt-20{
+	margin-top:20px;
+}

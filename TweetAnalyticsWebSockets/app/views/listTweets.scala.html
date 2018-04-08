@@ -1,0 +1,72 @@
+@(tweets:List[Tweet], searchForm: Form[TweetData])
+@main("Tweets") {
+
+    @* Global errors are not tied to any particular form field *@
+    @if(searchForm.hasGlobalErrors) {
+        @searchForm.globalErrors.asScala.map { error: play.data.validation.ValidationError =>
+            <div class="clearfix error">
+                @error.key: @error.message
+            </div>
+        }
+    }
+		<h2>Tweet Analytics</h2>
+		@helper.form(action =routes.TweetController.fetchTweets) {
+        @helper.CSRF.formField
+		<div class="input-group mb-1">
+       	 	@helper.inputText(searchForm("keyword"),'placeholder->"Search Keyword", 'class->"form-control")
+	  	</div>
+		<button type="submit" class="btn btn-primary">Search</button>
+		<a class="btn btn-link" href=@routes.TweetController.clearAll>Clear All</a>
+    }
+    <hr/>
+    <!-- 
+    @if(!tweets.isEmpty){
+		<table>
+        <thead>
+            <tr>
+            	<td>User</td>
+            	<td>Text</td>
+            </tr>
+        </thead>
+        <tbody>
+        	@for(w<- tweets){
+        	<tr>
+        		<td>
+        			<a href=@routes.TweetController.getUser(w.getUser.getScreenName)>@w.getUser.getScreenName</a>
+        		</td>
+        		<td>@w.getTweet</td>
+        	</tr>
+        	}
+        </tbody>
+		</table>
+		}
+		 -->
+		@if(!tweets.isEmpty){
+		@for(tweet<- tweets){
+		<div class="panel panel-primary tweet">
+			<div class="media">
+				<div class="media-right" style="padding-top:15px;">
+					<img class="avatar media-object" alt="@tweet.getUser().getScreenName()" src='@tweet.getUser().getProfileImageUrl()'>
+				</div>
+				<div class="media-body">
+					<div class="panel-heading">
+						<a href=@routes.TweetController.getUser(tweet.getUser.getScreenName)><strong>@tweet.getUser().getName()</strong></a>
+						<br/>&#64<i>@tweet.getUser().getScreenName()</i>
+					</div>
+					<div class="panel-body">	
+						<p> @tweet.getTweet()</p>
+						<span>@tweet.getCreatedAt()</span>
+						<p>
+							<span title="Retweets" class="retweets"><span class="glyphicon glyphicon-retweet icons"></span>@tweet.getRetweetCount</span>
+							<span title="Likes" class="favourites"><span class="glyphicon glyphicon-heart-empty icons"></span>@tweet.getFavoriteCount</span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		}
+		
+		
+	}
+
+}
