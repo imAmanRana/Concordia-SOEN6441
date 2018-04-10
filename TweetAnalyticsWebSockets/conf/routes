@@ -4,12 +4,9 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
-
-# Tweets
-GET     /tweet                    	controllers.TweetController.listTweets
-POST    /tweet                    	controllers.TweetController.fetchTweets
-GET		/user						controllers.TweetController.getUser(screenName:String)
-GET		/clearAll					controllers.TweetController.clearAll
+GET     /ws                         controllers.HomeController.ws
+GET		/user						controllers.HomeController.getUser(screenName:String)
+# GET		/clearAll					controllers.HomeController.clearAll
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -1,30 +1,30 @@
 package models;
 
-import java.util.Date;
-
 /**
  * Model class for holding twitter data
  * @author Satnam Singh
  */
 public class Tweet {
 	
-	private User user;
+	private String screenName;
 	private String tweet;
-	private Date createdAt;
-	private long retweetCount;
-	private long favoriteCount;
+	
+	public Tweet(String screenName,String tweet) {
+		this.screenName = screenName;
+		this.tweet = tweet;
+	}
 	
 	/**
-	 * @return the user
+	 * @return the screenName
 	 */
-	public User getUser() {
-		return user;
+	public String getScreenName() {
+		return screenName;
 	}
 	/**
-	 * @param user  the user (of type class User)
+	 * @param screenName the screenName to set
 	 */
-	public void setUser(User user) {
-		this.user = user;
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
 	}
 	/**
 	 * @return the tweet
@@ -33,45 +33,11 @@ public class Tweet {
 		return tweet;
 	}
 	/**
-	 * @param tweet   tweet to be set(of type class Tweet)
+	 * @param tweet the tweet to set
 	 */
 	public void setTweet(String tweet) {
 		this.tweet = tweet;
 	}
-	/**
-	 * @return date at which tweet was created
-	 */
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-	/**
-	 * @param createdAt  date at which tweet was created
-	 */
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-	/**
-	 * @return the retweetCount
-	 */
-	public long getRetweetCount() {
-		return retweetCount;
-	}
-	/**
-	 * @param retweetCount the count of retweets
-	 */
-	public void setRetweetCount(long retweetCount) {
-		this.retweetCount = retweetCount;
-	}
-	/**
-	 * @return the count favorite tweets
-	 */
-	public long getFavoriteCount() {
-		return favoriteCount;
-	}
-	/**
-	 * @param favoriteCount   the favoriteCount
-	 */
-	public void setFavoriteCount(long favoriteCount) {
-		this.favoriteCount = favoriteCount;
-	}
+	
+	
 }
