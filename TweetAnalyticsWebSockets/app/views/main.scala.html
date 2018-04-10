@@ -11,19 +11,23 @@
     <head>
         @* Here's where we render the page title `String`. *@
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-3.3.7-dist/css/bootstrap.min.css")">
-        <link rel="shortcut icon" type=image/x-icon" href="@routes.Assets.versioned("images/favicon.ico")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap-3.3.7-dist/css/bootstrap.min.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
     </head>
-    <body>
-		<script src="@routes.Assets.versioned("javascripts/jquery-3.3.1.min.js")" type="text/javascript"></script>
-		<script src="@routes.Assets.versioned("bootstrap-3.3.7-dist/js/bootstrap.min.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
-        <div class="container-fluid">
-          
+    <body class="container-fluid">
         @* And here's where we render the `Html` object containing
          * the page content. *@
         @content
-        </div>
+		<script type='text/javascript' src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
+        <script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("bootstrap-3.3.7-dist/js/bootstrap.min.js")" type="text/javascript"></script>
+        <div class="card" style="display:none;">
+            <h4 class="card-title" id="title"></h4>
+	  		<div class="panel panel-primary tweet">
+				<p class="card-text" id="text">test</p>
+	  		</div>
+		</div>
     </body>
+    
 </html>
