@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import twitter4j.JSONException;
@@ -12,19 +13,18 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 import twitter4j.User;
 
+
+/**
+ * Mock implementation of TwitterService
+ * @author Manpreet Kaur
+ *
+ */
 public class MockTwitterService implements TwitterService {
 	
 	@Override
 	public List<Status> queryApi(String keyword) {
-		List<Status> tweets = null;
-		String jsonString = "{\r\n" + 
-				" \"created_at\":\"Thu Apr 06 15:24:15 +0000 2017\",\r\n" + 
-				" \"id\": 850006245121695744,\r\n" + 
-				" \"id_str\": \"850006245121695744\",\r\n" + 
-				" \"text\": \"1/ Today wre sharing our vision for the future of the Twitter API platform!nhttps://t.co/XweGngmxlP\",\r\n" + 
-				" \"user\": {},  \r\n" + 
-				" \"entities\": {}\r\n" + 
-				"}}";
+		List<Status> tweets = new ArrayList<>();
+		String jsonString = "{\"aman\":\"Test\"}";
        
         String json; //a valid json string
         Status status = null;

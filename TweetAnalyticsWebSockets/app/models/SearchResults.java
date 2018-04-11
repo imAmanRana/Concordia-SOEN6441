@@ -22,7 +22,6 @@ public class SearchResults {
 	public SearchResults(String keyword,List<Tweet> tweet) {
 		this.keyword = keyword;
 		this.tweet = tweet;
-		System.out.println(this.tweet.get(0));
 	}
 	
 	
@@ -38,6 +37,7 @@ public class SearchResults {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	
 	/**
 	 * @return the tweet
 	 */
