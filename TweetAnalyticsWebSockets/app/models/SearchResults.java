@@ -15,6 +15,10 @@ public class SearchResults {
 	private String keyword;
 	private List<Tweet> tweet;
 	
+	public SearchResults()
+	{
+		
+	}
 	public SearchResults(String keyword,List<Tweet> tweet) {
 		this.keyword = keyword;
 		this.tweet = tweet;
