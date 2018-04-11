@@ -28,8 +28,10 @@ public class SearchResultsTest {
 
 		list.add(new Tweet("Jane", "BitCoin is going up!!!"));
 		list.add(new Tweet("anna", "Bitcoin is crap"));
-
-		searchResult = new SearchResults(keyword, list);
+		searchResult = new SearchResults();
+		
+		searchResult.setKeyword(keyword);
+		searchResult.setTweet(list);
 	}
 
 	@AfterClass
@@ -41,11 +43,13 @@ public class SearchResultsTest {
 	 * Test method for {@link models.SearchResults#getKeyword()}.
 	 */
 
+	
 	@Test
 	public void testKeyword() {
 		assertEquals(keyword, (searchResult.getKeyword()));
 	}
 
+	
 	/**
 	 * Test method for {@link models.SearchResults#getTweet()}.
 	 */

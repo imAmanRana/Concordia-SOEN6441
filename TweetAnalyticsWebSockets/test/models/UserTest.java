@@ -47,17 +47,27 @@ public class UserTest {
 	/**
 	 * Test method for {@link models.User#getProfileImageUrl()}.
 	 */
-
-	void testProfileImageUrl() {
+	@Test
+	public void testProfileImageUrl() {
 		assertEquals(profileImageUrl, user.getProfileImageUrl());
 	}
 
 	/**
 	 * Test method for {@link models.User#getScreenName()}.
 	 */
-
-	void testScreenName() {
+	@Test
+	public void testScreenName() {
 		assertEquals(screenName, user.getScreenName());
 	}
-
+	/**
+	 * Test method for {@link models.User#toString()}.
+	 */
+	@Test
+	public void testtoString() 
+	{
+		assertEquals(user.toString(),
+				"User [name=John Morgan, screenName=John, profileImageUrl=https://pbs.twimg.com/profile_images/910573838299213825/Wk2V3ukk_bigger.jpg]");
+	}
+	
+	
 }
