@@ -29,6 +29,11 @@ public class HomeController extends Controller {
 	private TwitterService twitterService = TwitterService.getInstance();
 	private ActorRef timeActor;
 	
+	/**
+	 * this action is used to inject the TimeActor in the HomeController
+	 * @param system system wraps the Actors 
+	 * @param materializer materializer is a factory for stream execution engines, it is the thing that makes streams run
+	 */
 	@Inject
 	public HomeController(ActorSystem system,Materializer materializer) {
 		this.actorSystem = system;
@@ -46,7 +51,10 @@ public class HomeController extends Controller {
     public Result index() {
         return ok(views.html.index.render(request()));
     }
-    
+    /**
+     * 
+     * @return Websocket
+     */
     public WebSocket ws() {
     	return WebSocket.Json.accept(request -> ActorFlow.actorRef(UserActor::getProps,actorSystem,materializer));
     }

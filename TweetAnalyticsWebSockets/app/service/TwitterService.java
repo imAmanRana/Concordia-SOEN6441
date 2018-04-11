@@ -34,6 +34,9 @@ public class TwitterService {
 	
 	private static final TwitterService instance=new TwitterService();
 	
+	/**
+	 * Constructor establishes the connection with twitter and returns the Twitter instance.
+	 */
 	private TwitterService() {
 		config = ConfigFactory.load();
 
@@ -51,6 +54,12 @@ public class TwitterService {
 		return instance;
 	}
 	
+	/**
+	 * This action takes a keyword and search it on twitter and returns the list of
+	 * type Status
+	 * @param keyword keyword is the string passed to Twitter API on basis of which we retrieve the tweets
+	 * @return List<Status>
+	 */
 	public List<Status> queryApi(String keyword) {
 		List<Status> tweets = null;
 		Query query = new Query(keyword);
@@ -68,7 +77,11 @@ public class TwitterService {
 				
 		
 	}
-	
+	/**
+	 * this method is used to display the information of the user.
+	 * @param screenName screenName used to display screenName of the User
+	 * @return User Object
+	 */
 	public User showUser(String screenName) {
 		User user = null;
 		try {	
@@ -79,7 +92,12 @@ public class TwitterService {
 		return user;
 	}
 	
-	
+	/**
+	 * this action is used to display the timeline of the user.	
+	 * @param screenName screenName is string passed to Twitter API on basis of which we retrieve the tweets according to the 
+	 * name of the user.
+	 * @return ResponseList<Status>
+	 */
 	public ResponseList<Status> getUserTimeline(String screenName) {
 		ResponseList<Status> list = null;
 		try {	
