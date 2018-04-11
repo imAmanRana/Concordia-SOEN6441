@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import actors.TimeActor.RegisterMsg;
 import akka.actor.AbstractActorWithTimers;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import models.SearchResults;
 import models.Tweet;
 import scala.concurrent.duration.Duration;
+import service.RealTwitterService;
 import service.TwitterService;
 import twitter4j.Status;
 
@@ -28,7 +28,7 @@ import twitter4j.Status;
 public class TimeActor extends AbstractActorWithTimers {
 
 	private Map<String,ActorRef> userActors = new LinkedHashMap<>();
-	private TwitterService twitterService = TwitterService.getInstance();
+	private TwitterService twitterService = RealTwitterService.getInstance();
 
 	/**Action used to receive the Twitter response managed by this
 	 * 
