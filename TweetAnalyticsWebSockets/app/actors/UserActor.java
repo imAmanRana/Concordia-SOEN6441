@@ -3,9 +3,6 @@
  */
 package actors;
 
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -14,7 +11,6 @@ import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import models.SearchResults;
-import models.Tweet;
 import play.libs.Json;
 
 /**
@@ -50,13 +46,7 @@ public class UserActor extends AbstractActor {
             this.result = result;
         }
 	}
-	/**
-	 * this method is called before launching the given actor
-	 */
-	@Override
-    public void preStart() {
-       
-    }
+
 	/**
 	 * this action is used to send the time of the message.
 	 * @param msg 

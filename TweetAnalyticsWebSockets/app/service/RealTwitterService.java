@@ -45,7 +45,6 @@ public class RealTwitterService implements TwitterService{
 				.setOAuthAccessTokenSecret(config.getString("ACCESS_TOKEN_SECRET"));
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
-		System.out.println("-->instantiated");
 	}
 	
 	public static RealTwitterService getInstance() {

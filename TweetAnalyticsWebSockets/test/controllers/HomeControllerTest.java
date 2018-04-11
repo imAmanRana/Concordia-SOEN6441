@@ -1,7 +1,7 @@
 package controllers;
 
 import static org.junit.Assert.assertEquals;
-import static play.mvc.Http.Status.OK;
+import static play.mvc.Http.Status.BAD_REQUEST;
 import static play.test.Helpers.GET;
 import static play.test.Helpers.route;
 
@@ -29,12 +29,18 @@ public class HomeControllerTest extends WithApplication {
                 .uri("/");
 
         Result result = route(app, request);
-        assertEquals(OK, result.status());
-        
-        
-        
-        
-}
+        assertEquals(BAD_REQUEST, result.status());
+	}
+	
+	@Test
+    public void testGetUser() {
+        RequestBuilder request = Helpers.fakeRequest()
+                .method(GET)
+                .uri("/");
+
+        Result result = route(app, request);
+        assertEquals(BAD_REQUEST, result.status());
+	}
 
 
 }
