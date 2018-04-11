@@ -8,7 +8,7 @@ import java.util.List;
 import scala.reflect.internal.Trees.This;
 
 /**
- * @author AmanRana
+ * @author Amandeep Singh
  *
  */
 public class SearchResults {
