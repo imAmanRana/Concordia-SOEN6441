@@ -14,6 +14,7 @@ import play.libs.streams.ActorFlow;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.WebSocket;
+import service.RealTwitterService;
 import service.TwitterService;
 import twitter4j.ResponseList;
 import twitter4j.Status;
@@ -26,7 +27,7 @@ public class HomeController extends Controller {
 
 	private ActorSystem actorSystem;
 	private Materializer materializer;
-	private TwitterService twitterService = TwitterService.getInstance();
+	private TwitterService twitterService = RealTwitterService.getInstance();
 	private ActorRef timeActor;
 	
 	/**
