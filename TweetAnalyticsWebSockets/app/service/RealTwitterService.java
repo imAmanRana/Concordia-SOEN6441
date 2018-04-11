@@ -23,7 +23,9 @@ import twitter4j.conf.ConfigurationBuilder;
 
 
 /**
- * @author Amandeep Singh
+ * Real implementation of TwitterService
+ * Calls the actual Twitter API
+ * @author Manpreet Kaur
  *
  */
 @Singleton
