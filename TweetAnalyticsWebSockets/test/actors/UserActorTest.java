@@ -31,7 +31,6 @@ public class UserActorTest {
 
 	@Test
 	public void test() {
-		System.out.println("inside test");
 		final TestKit testProbe = new TestKit(system);
 		ActorRef victim = null;
 		ActorRef userActor = system.actorOf(UserActor.getProps(victim), "User-actor");
@@ -45,8 +44,6 @@ public class UserActorTest {
 
 		// RegisterMsg greeting = testProbe.expectMsgClass(RegisterMsg.class);
 		assertEquals("\"canada\"", root.get("keyword").toString());
-		// System.out.println(greeting.keyword);
-
 	}
 
 }

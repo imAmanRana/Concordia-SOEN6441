@@ -59,7 +59,6 @@ public class TimeActor extends AbstractActorWithTimers {
 	 * @return
 	 */
 	private List<Tweet> filterTweets(List<Status> fetchTweets) {
-		System.out.println("filtering");
 		List<Tweet> tweets = fetchTweets.stream()
 			.map(status -> new Tweet(status.getUser().getScreenName(),status.getText())).collect(Collectors.toList());
 		return tweets;
@@ -71,7 +70,6 @@ public class TimeActor extends AbstractActorWithTimers {
 	 * @return
 	 */
 	private List<Status> fetchTweets(String keyword) {
-		System.out.println("fetching tweets");
 		if(twitterService==null) {
 			return null;
 		}else {
@@ -87,7 +85,7 @@ public class TimeActor extends AbstractActorWithTimers {
 	 */
 	@Override
 	public void preStart() {
-		getTimers().startPeriodicTimer("Timer", new Tick(), Duration.create(15, TimeUnit.SECONDS));
+		getTimers().startPeriodicTimer("Timer", new Tick(), Duration.create(7, TimeUnit.SECONDS));
 	}
 	/**
 	 *	this class is used to register actor to TimeActor.
