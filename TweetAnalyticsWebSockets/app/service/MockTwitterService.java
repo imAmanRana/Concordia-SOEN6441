@@ -13,6 +13,12 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 import twitter4j.User;
 
+
+/**
+ * Mock implementation of TwitterService
+ * @author Manpreet Kaur
+ *
+ */
 public class MockTwitterService implements TwitterService {
 	
 	@Override

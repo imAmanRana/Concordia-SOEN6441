@@ -14,6 +14,11 @@ import play.inject.guice.GuiceApplicationBuilder;
 import play.test.Helpers;
 import twitter4j.Status;
 
+/**
+ * Unit Test for Twitter Service class
+ * @author Manpreet Kaur
+ *
+ */
 public class TwitterServiceTest {
 
 	private static Application testApp;
